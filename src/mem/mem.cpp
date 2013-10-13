@@ -1,7 +1,5 @@
 // Class
 #include "mem.h"
-// Library
-#include <string.h>
 
 namespace mem {
 	Mem::Mem() {
@@ -11,7 +9,6 @@ namespace mem {
 	Mem::~Mem() {
 
 	}
-
 	void Mem::powerUp() {
 		memset(&this->bank, 0xff, sizeof(Word) * 0x800);
 		bank[0x0008] = 0xF7;
@@ -28,5 +25,19 @@ namespace mem {
 		;
 		bank[0x4015] = 0x00;  // silence APU
 		// changes not shown here also include S=S-3, IRQ disable flag to true (OR'd with $04)
+	}
+
+	void Mem::store(Word w, uint16_t addr) {
+		this->bank[addr] = w;
+	}
+
+	void Mem::store(Word * w, size_t size, uint16_t addr) {
+		for(int i = 0; i < size; ++i) {
+			bank[i] = w[i];
+		}
+	}
+
+	Word Mem::load(uint16_t addr) {
+		return bank[addr];
 	}
 }

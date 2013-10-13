@@ -18,9 +18,9 @@ namespace cpu {
 		void fetch(void);
 		void loadInstuction(Instruction i);
 		void execute(Instruction i);
-		void powerUp(void);
 		void reset(void);
 		~Cpu();
+
  		private:
 		Instruction next;
 		ProgramCounter counter;
