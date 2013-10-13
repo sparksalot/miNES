@@ -14,7 +14,7 @@ cpu::Cpu maincpu;
 
 int main(void) {
 
-	while(true) {
+	while (true) {
 		maincpu.tick();
 	}
 

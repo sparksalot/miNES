@@ -8,9 +8,8 @@
 
 namespace mem {
 	typedef uint8_t Word;
-	class Mem
-	{
-		public:
+	class Mem {
+ 		public:
 			Mem();
 			~Mem();
 
@@ -18,7 +17,7 @@ namespace mem {
 			Word load(uint8_t addr);
 			void reset();
 			void powerUp();
-		private:
+ 		private:
 			uint8_t bank[MEM_SIZE];
 	};
 }

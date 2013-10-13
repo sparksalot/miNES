@@ -5,7 +5,6 @@
 // Define
 #define CPU_INCREMENT 4
 
-
 namespace cpu {
 	Cpu::Cpu() {
 		counter.pc = 0;
@@ -14,16 +13,18 @@ namespace cpu {
 	}
 
 	void Cpu::powerUp(void) {
-		accumulator = 0; // nesdev
-		x = 0; // nesdev
-		y = 0; // nesdev
-		status = 0x34; // nesdev, P = $34 (IRQ disabled)*
-		sp = 0xFD; // nesdev, S = $FD
+		accumulator = 0;  // nesdev
+		x = 0;  // nesdev
+		y = 0;  // nesdev
+		status = 0x34;  // nesdev, P = $34 (IRQ disabled)*
+		sp = 0xFD;  // nesdev, S = $FD
 	}
 
 	void Cpu::reset(void) {
-		if (sp >= 3) sp -= 3; // nesdev, S was decremented by 3 (but nothing was written to the stack)
-		else sp = 0;
+		if (sp >= 3)
+			sp -= 3;  // nesdev, S was decremented by 3 (but nothing was written to the stack)
+		else
+			sp = 0;
 		//TODO nesdev, The I (IRQ disable) flag was set to true (status ORed with $04)
 	}
 
@@ -38,7 +39,7 @@ namespace cpu {
 	}
 
 	void Cpu::execute(Instruction i) {
-		
+
 	}
 
 	void Cpu::fetch() {

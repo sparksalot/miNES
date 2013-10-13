@@ -11,9 +11,8 @@
 #define STACK_BASE 0x0100
 
 namespace cpu {
-	class Cpu
-	{
-	public:
+	class Cpu {
+ 		public:
 		Cpu();
 		void tick(void);
 		void fetch(void);
@@ -22,14 +21,14 @@ namespace cpu {
 		void powerUp(void);
 		void reset(void);
 		~Cpu();
-	private:
+ 		private:
 		Instruction next;
 		ProgramCounter counter;
 		uint8_t accumulator;
 		uint8_t x, y;
 		mem::Mem mem;
-		uint8_t sp; // nesdev calls it S
-		uint8_t status; // nesdev calls it P
+		uint8_t sp;  // nesdev calls it S
+		uint8_t status;  // nesdev calls it P
 	};
 
 }
