@@ -1,4 +1,5 @@
 #include "mem.h"
+#include <string.h>
 
 namespace mem {
 	void Mem::Mem() {

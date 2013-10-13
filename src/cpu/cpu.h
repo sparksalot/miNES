@@ -1,10 +1,11 @@
 #ifndef CPU_H
 #define CPU_H
-// Library
-#include <stdint.h>
-// Project
+
 #include "instruction.h"
+#include "../mem/mem.h"
 #include "programcounter.h"
+#include <stdint.h>
+
 
 namespace cpu {
 	class Cpu
@@ -19,6 +20,7 @@ namespace cpu {
 	private:
 		Instruction next;
 		ProgramCounter pc;
+		Mem mem;
 	};
 
 }

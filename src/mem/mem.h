@@ -14,7 +14,7 @@ namespace mem {
 		void reset();
 		~Mem();
 	private:
-		uint8_t store[MAX_MEM];
+		Word store[MAX_MEM];
 	};
 
 }
