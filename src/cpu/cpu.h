@@ -1,17 +1,24 @@
-#include "instuction"
+#ifndef CPU_H
+#define CPU_H
+
+#include "instruction.h"
 #include <stdint.h>
 
 namespace cpu {
 	class Cpu
 	{
 	public:
-		Cpu(arguments);
+		Cpu();
 		void tick(void);
 		void fetch(void);
-		void loadInstuction(Instuction i);
+		void loadInstuction(Instruction i);
+		void execute(Instruction i);
 		~Cpu();
 	private:
 		uint16_t pc;
+		Instuction next;
 	};
 
 }
+
+#endif
