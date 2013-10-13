@@ -3,9 +3,12 @@
 
 #define CPU_INCREMENT 4
 
+
 namespace cpu {
 	Cpu::Cpu() {
 		memset(&this->next, 0, sizeof(this->next));
+		sp = 0;
+		status = 0;
 	}
 
 	Cpu::~Cpu() {

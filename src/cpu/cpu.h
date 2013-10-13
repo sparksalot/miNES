@@ -6,6 +6,8 @@
 #include "programcounter.h"
 #include <stdint.h>
 
+#define STACK_BASE 0x0100
+
 namespace cpu {
 	class Cpu
 	{
@@ -20,6 +22,8 @@ namespace cpu {
 		Instruction next;
 		ProgramCounter counter;
 		mem::Mem mem;
+		uint8_t sp;
+		unit8_t status;
 	};
 
 }
