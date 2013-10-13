@@ -3,6 +3,7 @@
 
 #define CPU_INCREMENT 4
 
+
 namespace cpu {
 	Cpu::Cpu() {
 		counter.pc = 0;
@@ -11,6 +12,8 @@ namespace cpu {
 		y = 0;
 		accumulator = 0;
 		memset(&this->next, 0, sizeof(this->next));
+		sp = 0;
+		status = 0;
 	}
 
 	Cpu::~Cpu() {
