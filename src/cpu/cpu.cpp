@@ -17,6 +17,8 @@ namespace cpu {
 		y = 0;  // nesdev
 		status = 0x34;  // nesdev, P = $34 (IRQ disabled)*
 		sp = 0xFD;  // nesdev, S = $FD
+
+		memset(operations, 0, sizeof(Operation));
 	}
 
 	void Cpu::reset(void) {
@@ -48,6 +50,11 @@ namespace cpu {
 
 	void Cpu::execute(Instruction i) {
 
+		if(!operations[i.inst]) {
+			printf("No operation.  (0x%x)\n", i.inst);
+			return;
+		}
+		operations[i.inst]();
 	}
 
 	void Cpu::fetch() {

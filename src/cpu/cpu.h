@@ -9,6 +9,7 @@
 #include "programcounter.h"
 // Define
 #define STACK_BASE 0x0100
+#define MAX_OPERATIONS 0xFF
 
 #define CPU_FLAG_CARRY (1<<0)
 #define CPU_FLAG_ZERO_RESULT (1<<1)
@@ -20,6 +21,7 @@
 #define CPU_FLAG_NEGATIVE_RESULT (1<<7)
 
 namespace cpu {
+	typedef void (*Operation)();
 	class Cpu {
  		public:
 		Cpu();
@@ -38,6 +40,7 @@ namespace cpu {
 		mem::Mem mem;
 		uint8_t sp;  // nesdev calls it S
 		uint8_t status;  // nesdev calls it P
+		Operation operations[MAX_OPERATIONS];
 	};
 
 }
