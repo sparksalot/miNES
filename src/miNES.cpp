@@ -8,7 +8,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "cpu/cpu.h"
+
+using namespace cpu;
+
+Cpu cpu;
+
 
 int main(void) {
+
+	while(true) {
+		cpu.tick();
+	}
+
 	return EXIT_SUCCESS;
 }

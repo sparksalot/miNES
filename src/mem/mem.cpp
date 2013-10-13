@@ -1,5 +1,5 @@
 #include "mem.h"
-#include <cstring>
+#include <string.h>
 
 namespace mem {
 	Mem::Mem() {
@@ -7,7 +7,7 @@ namespace mem {
 	}
 
 	void Mem::reset() {
-		std::memset(&this->bank, 0, sizeof(bank));
+		std::memset(&this->bank, 0, sizeof(this->bank));
 	}
 
 }

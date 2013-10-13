@@ -1,6 +1,8 @@
 #ifndef MEM_H
 #define MEM_H
 
+#include <stdint.h>
+
 #define MEM_SIZE 0xFFFF
 
 namespace mem {
@@ -18,4 +20,5 @@ namespace mem {
 			uint8_t bank[MEM_SIZE];
 	};
 }
+
 #endif
