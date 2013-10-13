@@ -19,6 +19,8 @@ namespace cpu {
 	private:
 		Instruction next;
 		ProgramCounter counter;
+		uint8_t accumulator;
+		uint8_t x, y;
 		mem::Mem mem;
 	};
 

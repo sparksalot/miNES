@@ -5,6 +5,11 @@
 
 namespace cpu {
 	Cpu::Cpu() {
+		counter.pc = 0;
+		next.inst = 0;
+		x = 0;
+		y = 0;
+		accumulator = 0;
 		memset(&this->next, 0, sizeof(this->next));
 	}
 

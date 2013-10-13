@@ -5,22 +5,13 @@
 
 namespace cpu{
 	typedef union {
-		struct
-		{
-			uint8_t inst;
-		}s;
+		uint8_t inst;
 		struct 
 		{
 			char op:3;
 			char operand:4;
 
 		}m;
-		struct
-		{
-			char op:3;
-			char target:5;
-		};
-
 	} Instruction;
 
 }
