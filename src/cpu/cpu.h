@@ -25,7 +25,7 @@ namespace cpu {
 		uint8_t x, y;
 		mem::Mem mem;
 		uint8_t sp;
-		unit8_t status;
+		uint8_t status;
 	};
 
 }
