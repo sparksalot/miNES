@@ -18,7 +18,7 @@ namespace cpu {
 		~Cpu();
 	private:
 		Instruction next;
-		ProgramCounter pc;
+		ProgramCounter counter;
 		mem::Mem mem;
 	};
 
