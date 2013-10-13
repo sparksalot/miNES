@@ -1,6 +1,8 @@
+// Class
 #include "cpu.h"
+// Library
 #include <string.h>
-
+// Define
 #define CPU_INCREMENT 4
 
 

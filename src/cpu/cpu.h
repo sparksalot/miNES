@@ -1,11 +1,13 @@
 #ifndef CPU_H
 #define CPU_H
 
+// Library
+#include <stdint.h>
+// Project
 #include "instruction.h"
 #include "../mem/mem.h"
 #include "programcounter.h"
-#include <stdint.h>
-
+// Define
 #define STACK_BASE 0x0100
 
 namespace cpu {

@@ -1,4 +1,6 @@
+// Class
 #include "mem.h"
+// Library
 #include <string.h>
 
 namespace mem {
@@ -20,5 +22,4 @@ namespace mem {
 		bank[0x4015] = 0x00;
 		memset(&bank[0x4000], 0x00, sizeof(Word) * 0xf);
 	}
-
 }
