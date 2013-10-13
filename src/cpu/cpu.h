@@ -19,6 +19,8 @@ namespace cpu {
 		void fetch(void);
 		void loadInstuction(Instruction i);
 		void execute(Instruction i);
+		void powerUp(void);
+		void reset(void);
 		~Cpu();
 	private:
 		Instruction next;
@@ -26,8 +28,8 @@ namespace cpu {
 		uint8_t accumulator;
 		uint8_t x, y;
 		mem::Mem mem;
-		uint8_t sp;
-		uint8_t status;
+		uint8_t sp; // nesdev calls it S
+		uint8_t status; // nesdev calls it P
 	};
 
 }
