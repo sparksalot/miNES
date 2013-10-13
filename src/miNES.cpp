@@ -10,9 +10,7 @@
 #include <stdlib.h>
 #include "cpu/cpu.h"
 
-using namespace cpu;
-
-Cpu cpu;
+cpu::Cpu cpu;
 
 
 int main(void) {

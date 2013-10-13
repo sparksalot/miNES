@@ -6,7 +6,6 @@
 #include "programcounter.h"
 #include <stdint.h>
 
-
 namespace cpu {
 	class Cpu
 	{
@@ -20,7 +19,7 @@ namespace cpu {
 	private:
 		Instruction next;
 		ProgramCounter pc;
-		Mem mem;
+		mem::Mem mem;
 	};
 
 }

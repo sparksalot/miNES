@@ -7,7 +7,7 @@ namespace mem {
 	}
 
 	void Mem::reset() {
-		std::memset(&this->bank, 0, sizeof(this->bank));
+		memset(&this->bank, 0, sizeof(this->bank));
 	}
 
 }
