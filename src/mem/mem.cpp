@@ -6,6 +6,10 @@ namespace mem {
 		reset();
 	}
 
+	Mem::~Mem() {
+
+	}
+
 	void Mem::reset() {
 		memset(&this->bank, 0, sizeof(this->bank));
 	}

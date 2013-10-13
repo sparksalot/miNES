@@ -1,6 +1,6 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		miNES.o
+OBJS =		miNES.o mem/mem.o cpu/cpu.o
 
 LIBS =
 

@@ -10,13 +10,12 @@
 #include <stdlib.h>
 #include "cpu/cpu.h"
 
-cpu::Cpu cpu;
-
+cpu::Cpu maincpu;
 
 int main(void) {
 
 	while(true) {
-		cpu.tick();
+		maincpu.tick();
 	}
 
 	return EXIT_SUCCESS;
