@@ -16,7 +16,7 @@ namespace cpu {
 		~Cpu();
 	private:
 		uint16_t pc;
-		Instuction next;
+		Instruction next;
 	};
 
 }

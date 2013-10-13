@@ -1,7 +1,7 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 namespace cpu{
-	union {
+	typedef union {
 		struct
 		{
 			uint8_t inst;
@@ -14,11 +14,11 @@ namespace cpu{
 		}m;
 		struct
 		{
-			char op:3
+			char op:3;
 			char target:5;
 		};
 
-	}
+	} Instruction;
 
 }
 #endif
