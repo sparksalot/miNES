@@ -1,8 +1,10 @@
 #ifndef CPU_H
 #define CPU_H
-
-#include "instruction.h"
+// Library
 #include <stdint.h>
+// Project
+#include "instruction.h"
+#include "programcounter.h"
 
 namespace cpu {
 	class Cpu
@@ -15,8 +17,8 @@ namespace cpu {
 		void execute(Instruction i);
 		~Cpu();
 	private:
-		uint16_t pc;
 		Instruction next;
+		ProgramCounter pc;
 	};
 
 }
