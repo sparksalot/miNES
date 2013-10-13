@@ -1,13 +1,13 @@
 #include "mem.h"
+#include <cstring>
 
 namespace mem {
-	void Mem::Mem() {
+	Mem::Mem() {
 		reset();
 	}
 
 	void Mem::reset() {
-		memset(&this->store, 0, sizeof(this->store));
+		std::memset(&this->bank, 0, sizeof(bank));
 	}
-
 
 }

@@ -1,22 +1,21 @@
 #ifndef MEM_H
 #define MEM_H
 
-#define MEM_SIZE 0xffff
+#define MEM_SIZE 0xFFFF
 
 namespace mem {
-	typedef Word uint8_t;
+	typedef uint8_t Word;
 	class Mem
 	{
-	public:
-		Mem();
-		void store(Word w, uint8_t addr);
-		Word load(uint8_t addr);
-		void reset();
-		~Mem();
-	private:
-		uint8_t store[MAX_MEM];
+		public:
+			Mem();
+			~Mem();
+
+			void store(Word w, uint8_t addr);
+			Word load(uint8_t addr);
+			void reset();
+		private:
+			uint8_t bank[MEM_SIZE];
 	};
-
 }
-
 #endif
