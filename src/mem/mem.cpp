@@ -31,9 +31,10 @@ namespace mem {
 		this->bank[addr] = w;
 	}
 
+	//TODO(nick) guard against (addr+i) >= max address
 	void Mem::store(Word * w, size_t size, uint16_t addr) {
 		for(size_t i = 0; i < size; ++i) {
-			bank[i] = w[i];
+			bank[addr+i] = w[i];
 		}
 	}
 
