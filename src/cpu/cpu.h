@@ -4,7 +4,6 @@
 // Library
 #include <stdint.h>
 // Project
-#include "instruction.h"
 #include "../mem/mem.h"
 #include "programcounter.h"
 // Define
@@ -22,6 +21,7 @@
 
 namespace cpu {
 	typedef void (*Operation)();
+	typedef uint8_t Instruction;
 	class Cpu {
  		public:
 		Cpu();

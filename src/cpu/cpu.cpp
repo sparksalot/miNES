@@ -11,7 +11,7 @@
 namespace cpu {
 	Cpu::Cpu() {
 		counter.pc = 0;
-		next.inst = 0;
+		next = 0;
 		accumulator = 0;  // nesdev
 		x = 0;  // nesdev
 		y = 0;  // nesdev
@@ -29,7 +29,7 @@ namespace cpu {
 		//TODO nesdev, The I (IRQ disable) flag was set to true (status ORed with $04)
 
 		counter.pc = 0;
-		next.inst = 0;
+		next = 0;
 		x = 0;
 		y = 0;
 		accumulator = 0;
@@ -45,20 +45,19 @@ namespace cpu {
 		printf("Current program counter is: %i\n", counter.pc);
 		fetch();
 		this->execute(this->next);
-		counter.pc = counter.pc + CPU_INCREMENT;
 	}
 
 	void Cpu::execute(Instruction i) {
 
-		if(!operations[i.inst]) {
-			printf("No operation.  (0x%x)\n", i.inst);
+		if(!operations[i]) {
+			printf("No operation.  (0x%x)\n", i);
 			return;
 		}
-		operations[i.inst]();
+		operations[i]();
 	}
 
 	void Cpu::fetch() {
-		mem::Word n = mem.load(this->counter.pc);
-		memcpy(&this->next, &n, sizeof(this->next));
+		this->next = (Instruction)mem.load(this->counter.pc);
+		++this->counter.pc;
 	}
 }
