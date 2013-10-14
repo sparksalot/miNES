@@ -32,7 +32,7 @@ namespace mem {
 	}
 
 	void Mem::store(Word * w, size_t size, uint16_t addr) {
-		for(int i = 0; i < size; ++i) {
+		for(size_t i = 0; i < size; ++i) {
 			bank[i] = w[i];
 		}
 	}
