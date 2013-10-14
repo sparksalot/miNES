@@ -32,6 +32,7 @@ namespace mem {
 	}
 
 	//TODO(nick) guard against (addr+i) >= max address
+	//TODO(nick) consider changing for loop+assignment to a memcpy()
 	void Mem::store(Word * w, size_t size, uint16_t addr) {
 		for(size_t i = 0; i < size; ++i) {
 			bank[addr+i] = w[i];
