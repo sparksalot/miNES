@@ -22,7 +22,6 @@ namespace mem {
 	}
 
 	void Mem::reset() {
-		;
 		bank[0x4015] = 0x00;  // silence APU
 		// changes not shown here also include S=S-3, IRQ disable flag to true (OR'd with $04)
 	}
@@ -31,9 +30,11 @@ namespace mem {
 		this->bank[addr] = w;
 	}
 
+	//TODO(nick) guard against (addr+i) >= max address
+	//TODO(nick) consider changing for loop+assignment to a memcpy()
 	void Mem::store(Word * w, size_t size, uint16_t addr) {
 		for(size_t i = 0; i < size; ++i) {
-			bank[i] = w[i];
+			bank[addr+i] = w[i];
 		}
 	}
 
