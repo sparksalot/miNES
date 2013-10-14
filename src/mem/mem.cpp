@@ -22,7 +22,6 @@ namespace mem {
 	}
 
 	void Mem::reset() {
-		;
 		bank[0x4015] = 0x00;  // silence APU
 		// changes not shown here also include S=S-3, IRQ disable flag to true (OR'd with $04)
 	}
