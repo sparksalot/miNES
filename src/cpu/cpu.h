@@ -25,14 +25,14 @@ namespace cpu {
 	class Cpu {
  		public:
 		Cpu();
-		void tick(void);
-		void fetch(void);
+		void tick();
+		void fetch();
 		void loadInstuction(Instruction i);
 		void execute(Instruction i);
-		void reset(void);
+		void reset();
 		~Cpu();
 
- 		private:
+		private:
 		Instruction next;
 		ProgramCounter counter;
 		uint8_t accumulator;

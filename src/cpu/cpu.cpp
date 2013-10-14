@@ -6,7 +6,6 @@
 
 #include "../mem/mem.h"
 // Define
-#define CPU_INCREMENT 1
 
 namespace cpu {
 	Cpu::Cpu() {
@@ -18,10 +17,10 @@ namespace cpu {
 		status = 0x34;  // nesdev, P = $34 (IRQ disabled)*
 		sp = 0xFD;  // nesdev, S = $FD
 
-		memset(operations, 0, sizeof(Operation));
+		memset(operations, 0, sizeof(operations));
 	}
 
-	void Cpu::reset(void) {
+	void Cpu::reset() {
 		if (sp >= 3)
 			sp -= 3;  // nesdev, S was decremented by 3 (but nothing was written to the stack)
 		else
