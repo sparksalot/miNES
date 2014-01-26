@@ -10,9 +10,14 @@
 #include "cpu/cpu.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL.h>
 #include <iostream>
 
 #include "version.h"
+
+#define WINDOW_WIDTH 640
+#define WINDOW_HIGHT 460
+#define TITLE "miNES"
 
 #define DEFAULT_ROM "game.rom"
 
@@ -30,6 +35,16 @@ void printHelp() {
 	std::cout << "miNES - version: " GIT_REV << std::endl << std::endl;
 	std::cout << "a crappy emulator. Very much a work in progress." << std::endl << std::endl;
 	printUsage();
+}
+
+bool Running;
+
+void handleSDLEvents(SDL_Event * Event) {
+	switch(Event->type) {
+		case SDL_QUIT:
+			Running = false;
+		break;
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -53,9 +68,45 @@ int main(int argc, char *argv[]) {
 
 	maincpu = std::unique_ptr<cpu::Cpu>(new cpu::Cpu());
 
-	while (true) {
-		maincpu->tick();
+
+	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+		fprintf(stderr, "Unable to initialize SDL:  %s\n", SDL_GetError());
+        return EXIT_FAILURE;
+    }
+
+    SDL_Window *window; 
+
+    window = SDL_CreateWindow(
+        TITLE,                             // window title
+        SDL_WINDOWPOS_UNDEFINED,           // initial x position
+        SDL_WINDOWPOS_UNDEFINED,           // initial y position
+        WINDOW_WIDTH,                      // width, in pixels
+        WINDOW_HIGHT,                      // height, in pixels
+        SDL_WINDOW_OPENGL                  // flags - see below
+    );
+
+    if (window == NULL) {
+        printf("Could not create window: %s\n", SDL_GetError());
+        return EXIT_FAILURE;
+    }
+
+    SDL_Renderer *render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (render == NULL){
+		printf("SDL_CreateRenderer Error: %s\n", SDL_GetError());
+		return EXIT_FAILURE;
 	}
+
+	SDL_RenderClear(render);
+
+	SDL_Event Event;
+	while (Running) {
+		while(SDL_PollEvent(&Event)) {
+			handleSDLEvents(&Event);
+        }
+        maincpu->tick();
+	}
+
+	SDL_Quit();
 
 	return EXIT_SUCCESS;
 }
