@@ -59,4 +59,8 @@ namespace cpu {
 		this->next = (Instruction)mem.load(this->counter.pc);
 		++this->counter.pc;
 	}
+
+	mem::Mem* Cpu::getMem() {
+		return &this->mem;
+	}
 }

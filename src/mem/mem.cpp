@@ -41,4 +41,8 @@ namespace mem {
 	Word Mem::load(uint16_t addr) {
 		return bank[addr];
 	}
+
+	uint8_t* Mem::getBank() {
+		return bank;
+	}
 }

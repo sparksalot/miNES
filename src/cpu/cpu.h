@@ -30,6 +30,8 @@ namespace cpu {
 		void loadInstuction(Instruction i);
 		void execute(Instruction i);
 		void reset();
+		mem::Mem * getMem();
+
 		~Cpu();
 
 		private:

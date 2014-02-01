@@ -1,6 +1,6 @@
 CXXFLAGS =	-O2 -g -Wall -Wextra -Wcast-align -pedantic -fmessage-length=0
 
-OBJS =		miNES.o mem/mem.o cpu/cpu.o
+OBJS =		miNES.o mem/mem.o cpu/cpu.o ppu/ppu.o
 
 LIBS =
 

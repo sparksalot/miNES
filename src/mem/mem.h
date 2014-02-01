@@ -19,6 +19,7 @@ namespace mem {
 			Word load(uint16_t addr);
 			void reset();
 			void powerUp();
+			uint8_t* getBank();
  		private:
 			uint8_t bank[MEM_SIZE];
 	};
