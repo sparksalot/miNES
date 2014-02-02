@@ -13,6 +13,7 @@ namespace ppu {
 			void tick();
  		private:
 			uint8_t * mem;
+			uint8_t vram[PPU_VRAM_SIZE];
 	};
 }
 
