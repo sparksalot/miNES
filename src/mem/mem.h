@@ -6,6 +6,7 @@
 #include <string.h>
 // Define
 #define MEM_SIZE 0xFFFF
+#define MEM_CARTRIDGE_SPACE_ADDR 0x4020
 
 namespace mem {
 	typedef uint8_t Word;

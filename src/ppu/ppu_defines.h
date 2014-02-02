@@ -34,4 +34,7 @@
 #define PPU_FLAG_FLIP_HORIZONTAL (1<<6)
 #define PPU_FLAG_FLIP_VERTICAL (1<<7)
 
+#define PPU_OAM_NUM_SPRITES 64
+#define PPU_OAM_NUM_BYTES 4
+
 #endif
