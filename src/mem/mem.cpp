@@ -26,19 +26,19 @@ namespace mem {
 		// changes not shown here also include S=S-3, IRQ disable flag to true (OR'd with $04)
 	}
 
-	void Mem::store(Word w, uint16_t addr) {
+	void Mem::store(const uint16_t addr, Word w) {
 		this->bank[addr] = w;
 	}
 
 	//TODO(nick) guard against (addr+i) >= max address
 	//TODO(nick) consider changing for loop+assignment to a memcpy()
-	void Mem::store(Word * w, size_t size, uint16_t addr) {
+	void Mem::store(const uint16_t addr, Word * w, size_t size) {
 		for(size_t i = 0; i < size; ++i) {
 			bank[addr+i] = w[i];
 		}
 	}
 
-	Word Mem::load(uint16_t addr) {
+	Word Mem::load(const uint16_t addr) {
 		return bank[addr];
 	}
 }

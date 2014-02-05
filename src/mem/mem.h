@@ -14,9 +14,9 @@ namespace mem {
 			Mem();
 			~Mem();
 
-			void store(Word w, uint16_t addr);
-			void store(Word * w, size_t size, uint16_t addr);
-			Word load(uint16_t addr);
+			void store(const uint16_t addr, Word w);
+			void store(const uint16_t addr, Word * w, size_t size);
+			Word load(const uint16_t addr);
 			void reset();
 			void powerUp();
  		private:
