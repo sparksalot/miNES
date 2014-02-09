@@ -96,6 +96,16 @@ namespace cpu {
 		counter.pc += 4;
 	}
 
+	void Cpu::storeRegisterAbsoluteX(uint16_t dest, uint8_t& src) {
+		storeRegister(dest + x, src);
+		counter.pc += 5;
+	}
+
+	void Cpu::storeRegisterAbsoluteY(uint16_t dest, uint8_t& src) {
+		storeRegister(dest + y, src);
+		counter.pc += 5;
+	}
+
 	void Cpu::storeRegister(uint16_t dest, uint8_t& src) {
 		mem.store(dest, src);
 	}
@@ -120,16 +130,13 @@ namespace cpu {
 		auto TYA = [&]() {transferRegister(accumulator,y);};
 		TYA();
 		y = 7;
-		auto STY_zeroPage =
-				[&](uint8_t dest_addr) {storeRegisterZeroPage(dest_addr, y);};
+		auto STY_zeroPage = [&](uint8_t dest_addr) {storeRegisterZeroPage(dest_addr, y);};
 		STY_zeroPage(0xFF);
 		y = 8;
-		auto STY_zeroPageX =
-				[&](uint8_t dest_addr) {storeRegisterZeroPageX(dest_addr, y);};
+		auto STY_zeroPageX = [&](uint8_t dest_addr) {storeRegisterZeroPageX(dest_addr, y);};
 		STY_zeroPageX(0xFF);
 		y = 9;
-		auto STY_absolute =
-				[&](uint16_t dest_addr) {storeRegisterAbsolute(dest_addr, y);};
+		auto STY_absolute = [&](uint16_t dest_addr) {storeRegisterAbsolute(dest_addr, y);};
 		STY_absolute(0xFFCC);
 	}
 }

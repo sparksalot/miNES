@@ -40,6 +40,8 @@ namespace cpu {
 			void storeRegisterZeroPageY(uint8_t dest, uint8_t& src);
 			void storeRegisterAbsolute(uint16_t dest, uint8_t& src);
 			void storeRegister(uint16_t dest, uint8_t& src);
+			void storeRegisterAbsoluteX(uint16_t dest, uint8_t& src);
+			void storeRegisterAbsoluteY(uint16_t dest, uint8_t& src);
 			void test();
 
  		private:
