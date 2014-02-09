@@ -22,6 +22,7 @@ namespace mem {
 			void reset();
 			void powerUp();
 			uint16_t decodeMirror(const uint16_t& addr);
+			uint8_t& operator[] (const uint16_t addr);
  		private:
 			uint8_t bank[MEM_SIZE];
 	};

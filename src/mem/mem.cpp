@@ -9,6 +9,11 @@ namespace mem {
 	Mem::~Mem() {
 
 	}
+
+	uint8_t& Mem::operator[] (const uint16_t addr) {
+	    return bank[decodeMirror(addr)];
+	}
+
 	void Mem::powerUp() {
 		memset(&this->bank, 0xff, sizeof(Word) * 0x800);
 		bank[0x0008] = 0xF7;
