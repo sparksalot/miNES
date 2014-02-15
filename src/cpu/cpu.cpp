@@ -56,6 +56,19 @@ namespace cpu {
 		operations[i]();
 	}
 
+	void Cpu::setCarryFlag() {
+		setFlag(CPU_FLAG_CARRY);
+	}
+
+	void Cpu::setDecimalFlag() {
+		setFlag(CPU_FLAG_DECIMAL);
+	}
+
+	void Cpu::setInteruptDisableFlag() {
+		setFlag(CPU_FLAG_INTERRUPT_DISABLE);
+	}
+
+
 	void Cpu::fetch() {
 		this->next = (Instruction) mem.load(this->counter.pc);
 		++this->counter.pc;

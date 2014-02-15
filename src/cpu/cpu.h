@@ -13,7 +13,7 @@
 #define CPU_FLAG_CARRY (1<<0)
 #define CPU_FLAG_ZERO_RESULT (1<<1)
 #define CPU_FLAG_INTERRUPT_DISABLE (1<<2)
-#define CPU_FLAG_DECIMAL_MODE (1<<3)
+#define CPU_FLAG_DECIMAL (1<<3)
 #define CPU_FLAG_BREAK_COMMAND (1<<4)
 #define CPU_FLAG_EXPANSION (1<<5)
 #define CPU_FLAG_OVERFLOW (1<<6)
@@ -42,6 +42,9 @@ namespace cpu {
 			void storeRegister(uint16_t dest, uint8_t& src);
 			void storeRegisterAbsoluteX(uint16_t dest, uint8_t& src);
 			void storeRegisterAbsoluteY(uint16_t dest, uint8_t& src);
+			void setCarryFlag();
+			void setDecimalFlag();
+			void setInteruptDisableFlag();
 			void test();
 
  		private:
