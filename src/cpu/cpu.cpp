@@ -71,39 +71,39 @@ namespace cpu {
 			setFlag(CPU_FLAG_ZERO_RESULT);
 		if (GETBIT(src, 7))
 			setFlag(CPU_FLAG_NEGATIVE_RESULT);
-		counter.pc += 2;
+		counter.pc += 1;
 	}
 
 	void Cpu::storeRegisterZeroPage(uint8_t dest, uint8_t& src) {
 		storeRegister((uint16_t) (0x00FF & dest), src);
-		counter.pc += 3;
+		counter.pc += 2;
 	}
 
 	//TODO() needs to account for wrapping over 0xFF! http://www.obelisk.demon.co.uk/6502/addressing.html#ZPX
 	void Cpu::storeRegisterZeroPageX(uint8_t dest, uint8_t& src) {
 		storeRegister((uint16_t) (0x00FF & (dest + x)), src);
-		counter.pc += 4;
+		counter.pc += 2;
 	}
 
 	//TODO() check if the above ZeroPage,X note applys to ZeroPage,y too
 	void Cpu::storeRegisterZeroPageY(uint8_t dest, uint8_t& src) {
 		storeRegister((uint16_t) (0x00FF & (dest + y)), src);
-		counter.pc += 4;
+		counter.pc += 2;
 	}
 
 	void Cpu::storeRegisterAbsolute(uint16_t dest, uint8_t& src) {
 		storeRegister(dest, src);
-		counter.pc += 4;
+		counter.pc += 3;
 	}
 
 	void Cpu::storeRegisterAbsoluteX(uint16_t dest, uint8_t& src) {
 		storeRegister(dest + x, src);
-		counter.pc += 5;
+		counter.pc += 3;
 	}
 
 	void Cpu::storeRegisterAbsoluteY(uint16_t dest, uint8_t& src) {
 		storeRegister(dest + y, src);
-		counter.pc += 5;
+		counter.pc += 3;
 	}
 
 	void Cpu::storeRegister(uint16_t dest, uint8_t& src) {
