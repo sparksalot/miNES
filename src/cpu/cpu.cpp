@@ -68,7 +68,6 @@ namespace cpu {
 		setFlag(CPU_FLAG_INTERRUPT_DISABLE);
 	}
 
-
 	void Cpu::fetch() {
 		this->next = (Instruction) mem.load(this->counter.pc);
 		++this->counter.pc;
@@ -89,5 +88,15 @@ namespace cpu {
 
 	void Cpu::storeRegister(uint16_t dest, uint8_t& src) {
 		mem.store(dest, src);
+	}
+
+	void Cpu::ADC(uint16_t& src) {
+		//TODO
+	}
+
+	void Cpu::AND(uint16_t& src) {
+		accumulator &= mem.load(src);
+		if (!accumulator) setFlag(CPU_FLAG_ZERO_RESULT);
+		if (GETBIT(accumulator,7)) setFlag(CPU_FLAG_NEGATIVE_RESULT);
 	}
 }

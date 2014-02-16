@@ -40,6 +40,9 @@ namespace cpu {
 			void setDecimalFlag();
 			void setInteruptDisableFlag();
 
+			void AND(uint16_t& src);
+			void ADC(uint16_t& src);
+
  		private:
 			Instruction next;
 			ProgramCounter counter;
