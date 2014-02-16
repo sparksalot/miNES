@@ -27,21 +27,54 @@ namespace cpu {
 	class Cpu {
  		public:
 			Cpu();
+			~Cpu();
+			// Core
 			void tick();
 			void fetch();
 			void loadInstuction(Instruction i);
 			void execute(Instruction i);
 			void reset();
-			~Cpu();
-			inline void setFlag(const unsigned int flag);
-			void transferRegister(uint8_t& dest, uint8_t& src);
-			void storeRegister(uint16_t dest, uint8_t& src);
-			void setCarryFlag();
-			void setDecimalFlag();
-			void setInteruptDisableFlag();
+			// Convinience
+			inline void clearFlag(const uint8_t flag);
+			inline void setFlag(const uint8_t flag);
+			inline bool getFlag(const uint8_t flag);
+			void compare(uint16_t& lValueAddress, uint8_t rvalue);
+			void transferRegister(uint8_t& dest, uint8_t& src, bool setFlags);
 
+			// Operations
 			void AND(uint16_t& src);
 			void ADC(uint16_t& src);
+			void ASL(uint16_t& src);
+			void BCC(int8_t& offset);
+			void BCS(int8_t& offset);
+			void BEQ(int8_t& offset);
+			void BIT(uint16_t& src);
+			void BMI(int8_t& offset);
+			void BNE(int8_t& offset);
+			void BPL(int8_t& offset);
+			void BRK();
+			void BVC(int8_t& offset);
+			void BVS(int8_t& offset);
+			void CLC();
+			void CLD();
+			void CLI();
+			void CLV();
+			void CMP(uint16_t& src);
+			void CPX(uint16_t& src);
+			void CPY(uint16_t& src);
+
+			void SEC();
+			void SED();
+			void SEI();
+			void STA(uint16_t dest);
+			void STX(uint16_t dest);
+			void STY(uint16_t dest);
+			void TAX();
+			void TAY();
+			void TSX();
+			void TXA();
+			void TXS();
+			void TYA();
 
  		private:
 			Instruction next;

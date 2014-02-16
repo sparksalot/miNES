@@ -9,6 +9,10 @@
 // Define
 
 namespace cpu {
+
+	//TODO Do something with the cycle count from the functions
+	//TODO Do something with the program counter from the functions
+
 	Cpu::Cpu() {
 		counter.pc = 0;
 		next = 0;
@@ -56,47 +60,190 @@ namespace cpu {
 		operations[i]();
 	}
 
-	void Cpu::setCarryFlag() {
-		setFlag(CPU_FLAG_CARRY);
-	}
-
-	void Cpu::setDecimalFlag() {
-		setFlag(CPU_FLAG_DECIMAL);
-	}
-
-	void Cpu::setInteruptDisableFlag() {
-		setFlag(CPU_FLAG_INTERRUPT_DISABLE);
-	}
-
 	void Cpu::fetch() {
 		this->next = (Instruction) mem.load(this->counter.pc);
 		++this->counter.pc;
 	}
 
-	inline void Cpu::setFlag(const unsigned int flag) {
+	inline void Cpu::clearFlag(const uint8_t flag) {
+		status &= ~flag;
+	}
+
+	inline void Cpu::setFlag(const uint8_t flag) {
 		status |= flag;
 	}
 
-	void Cpu::transferRegister(uint8_t& dest, uint8_t& src) {
-		dest = src;
-		if (!src)
+	inline bool Cpu::getFlag(const uint8_t flag) {
+		return !!(status & flag);
+	}
+
+	void Cpu::compare(uint16_t& lValueAddress, uint8_t rvalue) {
+		uint8_t lValue = mem[lValueAddress];
+		if (rvalue >= lValue)
+			setFlag(CPU_FLAG_CARRY);
+		if (rvalue > lValue)
 			setFlag(CPU_FLAG_ZERO_RESULT);
-		if (GETBIT(src, 7))
+		if (GETBIT((rvalue - lValue), 7))
 			setFlag(CPU_FLAG_NEGATIVE_RESULT);
+	}
+
+	void Cpu::transferRegister(uint8_t& dest, uint8_t& src, bool setFlags) {
+		dest = src;
+		if (setFlags) {
+			if (!src)
+				setFlag(CPU_FLAG_ZERO_RESULT);
+			if (GETBIT(src, 7))
+				setFlag(CPU_FLAG_NEGATIVE_RESULT);
+		}
 		counter.pc += 1;
 	}
 
-	void Cpu::storeRegister(uint16_t dest, uint8_t& src) {
-		mem.store(dest, src);
-	}
-
 	void Cpu::ADC(uint16_t& src) {
-		//TODO
+		//TODO Add with Carry
 	}
 
 	void Cpu::AND(uint16_t& src) {
 		accumulator &= mem.load(src);
-		if (!accumulator) setFlag(CPU_FLAG_ZERO_RESULT);
-		if (GETBIT(accumulator,7)) setFlag(CPU_FLAG_NEGATIVE_RESULT);
+		if (!accumulator)
+			setFlag(CPU_FLAG_ZERO_RESULT);
+		if (GETBIT(accumulator, 7))
+			setFlag(CPU_FLAG_NEGATIVE_RESULT);
+	}
+
+	void Cpu::ASL(uint16_t& src) {
+		//TODO Arithmetic Shift Left
+	}
+
+	void Cpu::BCC(int8_t& offset) {
+		if (!getFlag(CPU_FLAG_CARRY))
+			counter.pc += offset;
+	}
+
+	void Cpu::BCS(int8_t& offset) {
+		if (getFlag(CPU_FLAG_CARRY))
+			counter.pc += offset;
+	}
+
+	void Cpu::BEQ(int8_t& offset) {
+		if (getFlag(CPU_FLAG_ZERO_RESULT))
+			counter.pc += offset;
+	}
+
+	void Cpu::BIT(uint16_t& src) {
+		uint8_t testValue = mem[src];
+		if (!(testValue & accumulator))
+			setFlag(CPU_FLAG_ZERO_RESULT);
+		if (GETBIT(src, 6))
+			setFlag(CPU_FLAG_OVERFLOW);
+		if (GETBIT(src, 7))
+			setFlag(CPU_FLAG_NEGATIVE_RESULT);
+	}
+
+	void Cpu::BMI(int8_t& offset) {
+		if (getFlag(CPU_FLAG_NEGATIVE_RESULT))
+			counter.pc += offset;
+	}
+
+	void Cpu::BNE(int8_t& offset) {
+		if (!getFlag(CPU_FLAG_ZERO_RESULT))
+			counter.pc += offset;
+	}
+
+	void Cpu::BPL(int8_t& offset) {
+		if (!getFlag(CPU_FLAG_NEGATIVE_RESULT))
+			counter.pc += offset;
+	}
+
+	void Cpu::BRK() {
+		//TODO Force Interrupt
+	}
+
+	void Cpu::BVC(int8_t& offset) {
+		if (!getFlag(CPU_FLAG_OVERFLOW))
+			counter.pc += offset;
+	}
+
+	void Cpu::BVS(int8_t& offset) {
+		if (getFlag(CPU_FLAG_OVERFLOW))
+			counter.pc += offset;
+	}
+
+	void Cpu::CLC() {
+		clearFlag(CPU_FLAG_CARRY);
+	}
+
+	void Cpu::CLD() {
+		clearFlag(CPU_FLAG_DECIMAL);
+	}
+
+	void Cpu::CLI() {
+		clearFlag(CPU_FLAG_INTERRUPT_DISABLE);
+	}
+
+	void Cpu::CLV() {
+		clearFlag(CPU_FLAG_OVERFLOW);
+	}
+
+	void Cpu::CMP(uint16_t& src) {
+		compare(src, accumulator);
+	}
+
+	void Cpu::CPX(uint16_t& src) {
+		compare(src, x);
+	}
+
+	void Cpu::CPY(uint16_t& src) {
+		compare(src, y);
+	}
+
+	//////////
+
+	void Cpu::SEC() {
+		setFlag(CPU_FLAG_CARRY);
+	}
+
+	void Cpu::SED() {
+		setFlag(CPU_FLAG_DECIMAL);
+	}
+
+	void Cpu::SEI() {
+		setFlag(CPU_FLAG_INTERRUPT_DISABLE);
+	}
+
+	void Cpu::STA(uint16_t dest) {
+		mem[dest] = accumulator;
+	}
+
+	void Cpu::STX(uint16_t dest) {
+		mem[dest] = x;
+	}
+
+	void Cpu::STY(uint16_t dest) {
+		mem[dest] = y;
+	}
+
+	void Cpu::TAX() {
+		transferRegister(x, accumulator, true);
+	}
+
+	void Cpu::TAY() {
+		transferRegister(y, accumulator, true);
+	}
+
+	void Cpu::TSX() {
+		transferRegister(x, sp, true);
+	}
+
+	void Cpu::TXA() {
+		// Deliberately doesn't set the flags
+		transferRegister(accumulator, x, false);
+	}
+
+	void Cpu::TXS() {
+		transferRegister(sp, x, true);
+	}
+
+	void Cpu::TYA() {
+		transferRegister(accumulator, y, true);
 	}
 }
