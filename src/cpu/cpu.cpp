@@ -58,11 +58,6 @@ namespace cpu {
 		sp = 0xFD;  // nesdev, S = $FD
 
 		memset(operations, 0, sizeof(operations));
-		//ops[0].op = ADC;
-//		ops = {
-//				{ADC},
-//				{ADC}
-//		};
 	}
 
 	void Cpu::reset() {
@@ -97,10 +92,7 @@ namespace cpu {
 			printf("No operation.  (0x%x)\n", i);
 			return;
 		}
-
-
-
-		operations[i](1);
+		operations[i]();
 	}
 
 	void Cpu::fetch() {
@@ -289,7 +281,4 @@ namespace cpu {
 	void Cpu::TYA() {
 		transferRegister(accumulator, y, true);
 	}
-
-	//OperationStruct Cpu::ops[1] = {{ Cpu::AND, Immediate}};
-
 }
