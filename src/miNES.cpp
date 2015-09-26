@@ -12,12 +12,13 @@
 #include <stdlib.h>
 #include <SDL.h>
 #include <iostream>
+#include <stdlib.h>
 
 #include "version.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HIGHT 460
-#define TITLE "miNES"
+#define DEFAULT_WINDOW_WIDTH 640
+#define DEFAULT_WINDOW_HEIGHT 460
+#define APP_NAME "miNES"
 
 #define DEFAULT_ROM "game.rom"
 
@@ -25,14 +26,18 @@ static std::unique_ptr<cpu::Cpu> maincpu;
 
 static std::string rom = DEFAULT_ROM;
 
+static int windowHeight = DEFAULT_WINDOW_HEIGHT, windowWidth = DEFAULT_WINDOW_WIDTH;
+
 void printUsage() {
 	std::cout << "Usage:" << std::endl;
 	std::cout << "--help: prints the help and the usage" << std::endl;
 	std::cout << "--rom: set the rom to load. (defaults to: "DEFAULT_ROM")" << std::endl;
+	std::cout << "--height: sets the window height" << std::endl;
+	std::cout << "--width: sets the window width" << std::endl;
 }
 
 void printHelp() {
-	std::cout << "miNES - version: " GIT_REV << std::endl << std::endl;
+	std::cout << APP_NAME " - version: " GIT_REV << std::endl << std::endl;
 	std::cout << "a crappy emulator. Very much a work in progress." << std::endl << std::endl;
 	printUsage();
 }
@@ -43,6 +48,7 @@ void handleSDLEvents(SDL_Event * Event) {
 	switch(Event->type) {
 		case SDL_QUIT:
 			Running = false;
+			std::cout << "Exit requested" << std::endl;
 		break;
 	}
 }
@@ -57,6 +63,20 @@ int main(int argc, char *argv[]) {
 				rom = argv[i++];
 			} else {
 				std::cout << "expected a rom to load." << std::endl;
+				return EXIT_FAILURE;
+			}
+		} else if (strcmp(argv[i], "--width") == 0) {
+			if (argc + 1 < argc) {
+				windowWidth = atoi(argv[i++]);
+			} else {
+				std::cout << "expected screen width." << std::endl;
+				return EXIT_FAILURE;
+			}
+		} else if (strcmp(argv[i], "--height") == 0) {
+			if (argc + 1 < argc) {
+				windowHeight = atoi(argv[i++]);
+			} else {
+				std::cout << "expected screen height." << std::endl;
 				return EXIT_FAILURE;
 			}
 		} else {
@@ -74,34 +94,51 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    SDL_Window *window; 
+    SDL_Window *window;
 
-    window = SDL_CreateWindow(
-        TITLE,                             // window title
-        SDL_WINDOWPOS_UNDEFINED,           // initial x position
-        SDL_WINDOWPOS_UNDEFINED,           // initial y position
-        WINDOW_WIDTH,                      // width, in pixels
-        WINDOW_HIGHT,                      // height, in pixels
-        SDL_WINDOW_OPENGL                  // flags - see below
-    );
+	{
+		char titlebuff[100];
+		snprintf(titlebuff, sizeof(titlebuff), APP_NAME" - %s", rom.c_str());
+	    window = SDL_CreateWindow(
+	        titlebuff,                             // window title
+	        SDL_WINDOWPOS_UNDEFINED,           // initial x position
+	        SDL_WINDOWPOS_UNDEFINED,           // initial y position
+	        windowWidth,                      // width, in pixels
+	        windowHeight,                      // height, in pixels
+	        0
+	    );
+	}
 
-    if (window == NULL) {
+
+    if (window == nullptr) {
         printf("Could not create window: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
 
-    SDL_Renderer *render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (render == NULL){
-		printf("SDL_CreateRenderer Error: %s\n", SDL_GetError());
-		return EXIT_FAILURE;
+    SDL_Renderer *render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (render == nullptr){
+		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+		std::cout << "Falling back to software rendering..." << std::endl;
+
+		render = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+		if (render == nullptr){ 
+			std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+			std::cout << "Failed to create any renderer." << std::endl;
+			return EXIT_FAILURE;
+		}
 	}
 
 	SDL_RenderClear(render);
+	SDL_RenderPresent(render);
 
+	Running = true;
 	SDL_Event Event;
-	while (Running) {
+	while (true) {
 		while(SDL_PollEvent(&Event)) {
 			handleSDLEvents(&Event);
+        }
+        if (!Running) {
+        	break;
         }
         maincpu->tick();
 	}
