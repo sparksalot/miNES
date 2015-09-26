@@ -3,6 +3,7 @@
 
 // Library
 #include <stdint.h>
+#include <memory>
 // Project
 #include "../mem/mem.h"
 #include "programcounter.h"
@@ -37,7 +38,7 @@ namespace cpu {
 		ProgramCounter counter;
 		uint8_t accumulator;
 		uint8_t x, y;
-		mem::Mem mem;
+		std::unique_ptr<mem::Mem> mem;
 		uint8_t sp;  // nesdev calls it S
 		uint8_t status;  // nesdev calls it P
 		Operation operations[MAX_OPERATIONS];

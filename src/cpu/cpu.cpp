@@ -8,17 +8,17 @@
 // Define
 
 namespace cpu {
-	Cpu::Cpu() {
-		counter.pc = 0;
-		next = 0;
-		accumulator = 0;  // nesdev
-		x = 0;  // nesdev
-		y = 0;  // nesdev
-		status = 0x34;  // nesdev, P = $34 (IRQ disabled)*
-		sp = 0xFD;  // nesdev, S = $FD
-
-		memset(operations, 0, sizeof(operations));
-	}
+	Cpu::Cpu() : 
+	next(0),
+	counter({0}), 
+	accumulator(0), 
+	x(0), // nesdev
+	y(0), // nesdev
+	mem(new mem::Mem()),
+	sp(0xFD), // nesdev, S = $FD
+	status(0x34), // nesdev, P = $34 (IRQ disabled)*
+	operations({0})
+	{ }
 
 	void Cpu::reset() {
 		if (sp >= 3)
@@ -42,7 +42,7 @@ namespace cpu {
 
 	void Cpu::tick() {
 		printf("Current program counter is: %i\n", counter.pc);
-		fetch();
+		this->fetch();
 		this->execute(this->next);
 	}
 
@@ -56,7 +56,7 @@ namespace cpu {
 	}
 
 	void Cpu::fetch() {
-		this->next = (Instruction)mem.load(this->counter.pc);
+		this->next = (Instruction)mem->load(this->counter.pc);
 		++this->counter.pc;
 	}
 }
