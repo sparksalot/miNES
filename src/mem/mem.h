@@ -9,6 +9,7 @@
 
 namespace mem {
 	typedef uint8_t Word;
+
 	class Mem {
  		public:
 			Mem();
@@ -17,6 +18,7 @@ namespace mem {
 			void store(Word w, uint16_t addr);
 			void store(Word * w, size_t size, uint16_t addr);
 			Word load(uint16_t addr);
+			void copy(uint16_t addr, Word * w, size_t len);
 			void reset();
 			void powerUp();
  		private:

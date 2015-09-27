@@ -42,4 +42,10 @@ namespace mem {
 	Word Mem::load(uint16_t addr) {
 		return bank[addr];
 	}
+
+	void Mem::copy(uint16_t addr, Word * w, size_t len) {
+		for(size_t i = 0; i < len; i++) {
+			w[i] = bank[i+addr];
+		}
+	}
 }
