@@ -8,6 +8,7 @@
 
 
 #include "cpu/cpu.h"
+#include "ppu/ppu.h"
 #include "version.h"
 
 #include <cstdio>
@@ -89,6 +90,7 @@ int main(int argc, char *argv[]) {
 
 	auto bank = std::unique_ptr<mem::Mem>(new mem::Mem());
 	auto maincpu = std::unique_ptr<cpu::Cpu>(new cpu::Cpu(bank.get()));
+	auto mainppu = std::unique_ptr<ppu::Ppu>(new ppu::Ppu(bank.get()));
 
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -141,7 +143,13 @@ int main(int argc, char *argv[]) {
         if (!Running) {
         	break;
         }
+
+        // 3:1 tick ratio.
         maincpu->tick();
+
+        mainppu->tick();
+        mainppu->tick();
+        mainppu->tick();
 	}
 
 	SDL_Quit();
