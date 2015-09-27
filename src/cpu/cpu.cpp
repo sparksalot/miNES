@@ -1,20 +1,19 @@
 // Class
 #include "cpu.h"
 // Library
-#include <string.h>
-#include <stdio.h>
+#include <string>
+#include <iostream>
 
-#include "../mem/mem.h"
 // Define
 
 namespace cpu {
-	Cpu::Cpu() : 
+	Cpu::Cpu(mem::Mem * mem) : 
 	next(0),
 	counter({0}), 
 	accumulator(0), 
 	x(0), // nesdev
 	y(0), // nesdev
-	mem(new mem::Mem()),
+	mem(mem),
 	sp(0xFD), // nesdev, S = $FD
 	status(0x34), // nesdev, P = $34 (IRQ disabled)*
 	operations({0})
@@ -34,22 +33,21 @@ namespace cpu {
 		accumulator = 0;
 		sp = 0;
 		status = 0;
-		mem.reset();
+		mem->reset();
 	}
 
 	Cpu::~Cpu() {
 	}
 
 	void Cpu::tick() {
-		printf("Current program counter is: %i\n", counter.pc);
 		this->fetch();
 		this->execute(this->next);
 	}
 
 	void Cpu::execute(Instruction i) {
-
 		if(!operations[i]) {
-			printf("No operation.  (0x%x)\n", i);
+			std::cerr << "CPU: No operation. (i: 0x" << std::hex << (uint16_t)i
+				<< ", pc: 0x" << std::hex << counter.pc << ")" << std::endl;
 			return;
 		}
 		operations[i]();

@@ -2,8 +2,8 @@
 #define MEM_H
 
 // Library
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstdio>
 // Define
 #define MEM_SIZE 0xFFFF
 

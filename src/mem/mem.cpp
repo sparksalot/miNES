@@ -1,5 +1,6 @@
 // Class
 #include "mem.h"
+#include <cstring>
 
 namespace mem {
 	Mem::Mem() {

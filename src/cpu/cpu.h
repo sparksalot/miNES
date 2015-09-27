@@ -2,8 +2,7 @@
 #define CPU_H
 
 // Library
-#include <stdint.h>
-#include <memory>
+#include <cstdint>
 // Project
 #include "../mem/mem.h"
 #include "programcounter.h"
@@ -25,7 +24,7 @@ namespace cpu {
 	typedef uint8_t Instruction;
 	class Cpu {
  		public:
-		Cpu();
+		Cpu(mem::Mem * mem);
 		void tick();
 		void fetch();
 		void loadInstuction(Instruction i);
@@ -38,7 +37,7 @@ namespace cpu {
 		ProgramCounter counter;
 		uint8_t accumulator;
 		uint8_t x, y;
-		std::unique_ptr<mem::Mem> mem;
+		mem::Mem * mem;
 		uint8_t sp;  // nesdev calls it S
 		uint8_t status;  // nesdev calls it P
 		Operation operations[MAX_OPERATIONS];
