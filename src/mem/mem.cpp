@@ -1,6 +1,8 @@
 // Class
 #include "mem.h"
 
+#include "../ppu/ppu.h"
+
 #include <cstring>
 #include <cassert>
 #include <iostream>
@@ -12,13 +14,14 @@
 #define MEM_PPU_SPACE_BEGIN 0x2000
 
 namespace mem {
-	Mem::Mem() {
+	Mem::Mem(std::unique_ptr<Cartridge> &cart) : cart(std::move(cart)) {
 		powerUp();
 	}
 
 	Mem::~Mem() {
 
 	}
+
 	void Mem::powerUp() {
 		memset(&this->bank, 0xff, sizeof(bank));
 		store(0xF7, 0x0008);
@@ -42,15 +45,44 @@ namespace mem {
 		if(addr < MEM_MIRROR_END) {
 			this->bank[addr % MEM_SIZE] = w;
 		} else if (addr < MEM_PPU_SPACE_END) {
-			// mirrored every 8 bytes.
-			auto ppuAddr = (addr - MEM_PPU_SPACE_BEGIN) % 8;
+			assert(ppu);
+			
+			auto ppuAddr = addr;
+			// mirrored every 8 bytes. normalise to first appearance.
+			if (ppuAddr > MEM_PPU_SPACE_BEGIN + 7) {
+				ppuAddr = ((addr - MEM_PPU_SPACE_BEGIN) % 8) + MEM_PPU_SPACE_BEGIN;
+			}
+
 			std::cout << "MEM: ppu write to 0x" << std::hex << ppuAddr << std::endl;
+			switch(ppuAddr) {
+				case PPU_CTRL_ADDR: {
+					ppu->setCtrl(w);
+				} break;
+				case PPU_MASK_ADDR: {
+					ppu->setCtrl(w);
+				} break;
+				case PPU_OAMADDR_ADDR: {
+					ppu->setOamAddr(w);
+				}break;
+				case PPU_OAMDATA_ADDR: {
+					ppu->setOamData(w);
+				}break;
+				default:
+					std::cerr << "MEM: unmapped ppu write to 0x" << std::hex << ppuAddr << std::endl;
+				break;
+			}
 
 		} else if (addr < MEM_APU_IO_END) {
+			switch(addr) {
+				case PPU_DMA_ADDR: {
+					assert(ppu);
+					ppu->dma(w);
+				}
+			}
 
 		} else { // 0x4020 space and above is the cart.
-			std::cerr << "MEM: Attempted to write unmapped memory addr: 0x" << std::hex << addr << std::endl;
-			assert(false);
+			assert(cart);
+			cart->store(w, addr);
 		}
 	}
 
@@ -65,9 +97,33 @@ namespace mem {
 	Word Mem::load(uint16_t addr) {
 		if(addr < MEM_MIRROR_END) {
 			return this->bank[addr % MEM_SIZE];
-		}
+		} else if (addr < MEM_PPU_SPACE_END) {
+			assert(ppu);
+			
+			auto ppuAddr = addr;
+			// mirrored every 8 bytes. normalise to first appearance.
+			if (ppuAddr > MEM_PPU_SPACE_BEGIN + 7) {
+				ppuAddr = ((addr - MEM_PPU_SPACE_BEGIN) % 8) + MEM_PPU_SPACE_BEGIN;
+			}
 
-		//TODO(jake) write mappings for apu/ppu/cartspace
+			std::cout << "MEM: ppu read 0x" << std::hex << ppuAddr << std::endl;
+			switch(ppuAddr) {
+				case PPU_STATUS_ADDR:
+				return ppu->getStatus();
+				default:
+					std::cerr << "MEM: unmapped ppu read 0x" << std::hex << ppuAddr << std::endl;
+					assert(false);
+				break;
+			}
+
+		} else if (addr < MEM_APU_IO_END) {
+			switch(addr) {
+				case PPU_DMA_ADDR: return 0;
+			}
+		} else { // 0x4020 space and above is the cart.
+			assert(cart);
+			return cart->load(addr);
+		}
 
 		std::cerr << "MEM: Attempted to read unmapped memory addr: 0x" << std::hex << addr << std::endl;
 		assert(false);
@@ -78,5 +134,9 @@ namespace mem {
 		for(size_t i = 0; i < len; i++) {
 			w[i] = Mem::load(i+addr);
 		}
+	}
+
+	void Mem::setPpu(ppu::Ppu * ppu) {
+		this->ppu = ppu;
 	}
 }

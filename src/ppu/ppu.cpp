@@ -3,8 +3,6 @@
 #include <cstring>
 #include <iostream>
 
-#define PPU_CTRL_ADDR 0x2000
-
 
 #define PPU_MASK_ADDR 0x2001
 
@@ -15,9 +13,8 @@
 
 using namespace ppu;
 
-Ppu::Ppu(mem::Mem * mem):bank(mem), odd(false), scanline(-1), cycle(0) {
-	bank->store(0, PPU_CTRL_ADDR);
-	bank->store(0, PPU_MASK_ADDR);
+Ppu::Ppu(mem::Mem * mem):bank(mem), odd(false), scanline(-1), cycle(0), ctrl(0), mask(0) {
+	mem->setPpu(this);
 }
 
 Ppu::~Ppu() {
@@ -64,16 +61,28 @@ void Ppu::tick() {
 }
 
 void Ppu::reset() {
-	bank->store(0, PPU_CTRL_ADDR);
-	bank->store(0, PPU_MASK_ADDR);
+	this->ctrl = 0;
+	this->mask = 0;
 	odd = false;
 }
 
-void Ppu::dma() {
-	uint16_t addr = ((uint16_t)bank->load(PPU_OAM_DMA_ADDR)) << 8;
+void Ppu::dma(uint8_t h) {
+	uint16_t addr = ((uint16_t) h) << 8;
 
 	std::cout << "PPU: DMA from 0x" <<std::hex << addr << std::endl;
 
-	bank->copy(addr, &oam[0][0], sizeof(oam));
-	bank->store(0, PPU_OAM_DMA_ADDR);
+	bank->copy(addr, &oam[0][0], sizeof(oam));;
+}
+
+void Ppu::setCtrl(uint8_t ctrl) { this->ctrl = ctrl; }
+
+void Ppu::setMask(uint8_t mask) { this->mask = mask; }
+
+uint8_t Ppu::getStatus() { return this->status; }
+
+void Ppu::setOamAddr(uint8_t addr) { oamaddr = addr; }
+
+void Ppu::setOamData(uint8_t data) {
+	uint8_t *tmp = (&oam[0][0]) + oamaddr++;
+	(*tmp) = data;
 }
