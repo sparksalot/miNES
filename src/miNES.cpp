@@ -88,7 +88,11 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	auto cart = std::unique_ptr<cart::Cartridge>(nullptr);
+	auto cart = cart::loadCart(rom);
+	if (!cart) {
+		std::cerr << "failed to read rom: " << rom << std::endl;
+		return EXIT_FAILURE;
+	}
 	auto bank = std::unique_ptr<mem::Mem>(new mem::Mem(cart));
 	auto maincpu = std::unique_ptr<cpu::Cpu>(new cpu::Cpu(bank.get()));
 	auto mainppu = std::unique_ptr<ppu::Ppu>(new ppu::Ppu(bank.get()));
