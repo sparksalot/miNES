@@ -14,7 +14,7 @@
 #define MEM_PPU_SPACE_BEGIN 0x2000
 
 namespace mem {
-	Mem::Mem(std::unique_ptr<Cartridge> &cart) : cart(std::move(cart)) {
+	Mem::Mem(std::unique_ptr<cart::Cartridge> &cart) : cart(std::move(cart)) {
 		powerUp();
 	}
 

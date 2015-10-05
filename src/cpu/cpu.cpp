@@ -15,8 +15,7 @@ namespace cpu {
 	y(0), // nesdev
 	mem(mem),
 	sp(0xFD), // nesdev, S = $FD
-	status(0x34), // nesdev, P = $34 (IRQ disabled)*
-	operations({0})
+	status(0x34) // nesdev, P = $34 (IRQ disabled)*
 	{ }
 
 	void Cpu::reset() {

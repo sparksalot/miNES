@@ -33,7 +33,7 @@ static int windowHeight = DEFAULT_WINDOW_HEIGHT, windowWidth = DEFAULT_WINDOW_WI
 void printUsage() {
 	std::cout << "Usage:" << std::endl;
 	std::cout << "--help: prints the help and the usage" << std::endl;
-	std::cout << "--rom: set the rom to load. (defaults to: "DEFAULT_ROM")" << std::endl;
+	std::cout << "--rom: set the rom to load. (defaults to: " DEFAULT_ROM ")" << std::endl;
 	std::cout << "--height: sets the window height" << std::endl;
 	std::cout << "--width: sets the window width" << std::endl;
 }
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	auto cart = std::unique_ptr<mem::Cartridge>(nullptr);
+	auto cart = std::unique_ptr<cart::Cartridge>(nullptr);
 	auto bank = std::unique_ptr<mem::Mem>(new mem::Mem(cart));
 	auto maincpu = std::unique_ptr<cpu::Cpu>(new cpu::Cpu(bank.get()));
 	auto mainppu = std::unique_ptr<ppu::Ppu>(new ppu::Ppu(bank.get()));

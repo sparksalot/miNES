@@ -3,7 +3,8 @@
 
 
 // Library
-#include <cstdint>
+#include "../cart/cartridge.h"
+
 #include <cstdio>
 #include <memory>
 // Define
@@ -18,16 +19,9 @@ namespace ppu {
 namespace mem {
 	typedef uint8_t Word;
 
-	class Cartridge {
-	public:
-		virtual void store(Word w, uint16_t addr);
-		virtual Word load(uint16_t addr);
-		virtual ~Cartridge();
-	};
-
 	class Mem {
  		public:
-			Mem(std::unique_ptr<Cartridge> &cart);
+			Mem(std::unique_ptr<cart::Cartridge> &cart);
 			~Mem();
 
 			void setPpu(ppu::Ppu * ppu);
@@ -41,7 +35,7 @@ namespace mem {
 			void powerUp();
  		private:
 			uint8_t bank[MEM_SIZE];
-			std::unique_ptr<Cartridge> cart;
+			std::unique_ptr<cart::Cartridge> cart;
 			ppu::Ppu * ppu;
 	};
 }
