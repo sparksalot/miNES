@@ -24,7 +24,7 @@
 #define DEFAULT_WINDOW_HEIGHT 460
 #define APP_NAME "miNES"
 
-#define DEFAULT_ROM "game.rom"
+#define DEFAULT_ROM "game.nes"
 
 static std::string rom = DEFAULT_ROM;
 
@@ -88,11 +88,13 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	std::cout << "Loading rom: " << rom << "..." << std::endl;
 	auto cart = cart::loadCart(rom);
 	if (!cart) {
-		std::cerr << "failed to read rom: " << rom << std::endl;
+		std::cerr << "Failed to load!" << std::endl;
 		return EXIT_FAILURE;
 	}
+	std::cout << "Loading complete!";
 	auto bank = std::unique_ptr<mem::Mem>(new mem::Mem(cart));
 	auto maincpu = std::unique_ptr<cpu::Cpu>(new cpu::Cpu(bank.get()));
 	auto mainppu = std::unique_ptr<ppu::Ppu>(new ppu::Ppu(bank.get()));
